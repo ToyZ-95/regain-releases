@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Regain Launcher · Download</title>
+  <meta name="description" content="Regain is a minimalist, text-only Android launcher that turns your phone from a dopamine casino back into a tool. Free APK download.">
+  <meta property="og:title" content="Regain Launcher">
+  <meta property="og:description" content="A minimalist, text-only Android launcher. Friction as a feature.">
+  <meta property="og:image" content="https://toyz-95.github.io/regain-releases/assets/banner.png">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#0b1118">
+  <style>
+    :root {
+      --bg: #0b1118;
+      --surface: #121c27;
+      --surface-2: #192634;
+      --border: #24364a;
+      --text: #e7efeb;
+      --muted: #97a8a3;
+      --accent: #8fe3b5;
+      --accent-ink: #0b1f15;
+      --radius: 14px;
+      --maxw: 960px;
+      color-scheme: dark;
+    }
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    }
+    a { color: var(--accent); }
+    a:focus-visible, button:focus-visible, select:focus-visible {
+      outline: 3px solid var(--accent); outline-offset: 3px;
+    }
+    .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 16px; }
+    section { padding: 48px 0; border-top: 1px solid var(--border); }
+    h1, h2, h3 { line-height: 1.2; margin: 0 0 12px; }
+    h2 { font-size: 1.5rem; }
+    p { margin: 0 0 12px; }
+    .muted { color: var(--muted); }
+    code, pre {
+      font: 0.9rem/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+    code { background: var(--surface-2); padding: 2px 6px; border-radius: 6px; overflow-wrap: anywhere; }
+
+    /* Hero */
+    .hero { padding: 64px 0 40px; }
+    .eyebrow { color: var(--accent); font-weight: 600; letter-spacing: .08em; text-transform: uppercase; font-size: .8rem; }
+    .hero h1 { font-size: clamp(2.4rem, 7vw, 3.6rem); margin: 8px 0 12px; }
+    .hero .lead { font-size: 1.15rem; color: var(--muted); max-width: 40ch; }
+    .cta { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-top: 24px; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      min-height: 48px; padding: 12px 22px; border-radius: 999px;
+      font-weight: 600; font-size: 1rem; text-decoration: none; cursor: pointer;
+      border: 1px solid transparent;
+    }
+    .btn-primary { background: var(--accent); color: var(--accent-ink); }
+    .btn-primary:hover { filter: brightness(1.06); }
+    .btn-ghost { background: transparent; color: var(--text); border-color: var(--border); }
+    .btn-ghost:hover { border-color: var(--accent); }
+    .meta { margin-top: 12px; font-size: .95rem; color: var(--muted); min-height: 1.6em; }
+    .banner { margin-top: 40px; width: 100%; height: auto; border-radius: var(--radius); border: 1px solid var(--border); display: block; }
+
+    /* Versions */
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
+    .versions-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: end; }
+    .field { display: flex; flex-direction: column; gap: 6px; flex: 1 1 min(240px, 100%); min-width: 0; }
+    label { font-size: .9rem; color: var(--muted); }
+    select {
+      appearance: none; -webkit-appearance: none;
+      width: 100%; min-height: 48px; padding: 10px 40px 10px 14px;
+      background: var(--surface-2) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%2397a8a3' stroke-width='2'/%3E%3C/svg%3E") no-repeat right 14px center;
+      color: var(--text); border: 1px solid var(--border); border-radius: 10px; font-size: 1rem;
+    }
+    .notes { margin-top: 16px; white-space: pre-wrap; overflow-wrap: anywhere; color: var(--text); }
+    .notes:empty { display: none; }
+    .notice { margin-top: 12px; font-size: .95rem; color: var(--muted); }
+
+    /* Screenshots */
+    .shots { display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 8px; }
+    .shots figure { margin: 0; flex: 0 0 200px; scroll-snap-align: start; }
+    .shots img { width: 200px; height: auto; aspect-ratio: 1440 / 3216; border-radius: 18px; border: 1px solid var(--border); display: block; background: #000; }
+    .shots figcaption { text-align: center; color: var(--muted); font-size: .9rem; margin-top: 8px; }
+
+    /* Steps */
+    ol.steps { padding-left: 1.3em; margin: 0; }
+    ol.steps li { margin-bottom: 14px; }
+    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr)); gap: 16px; }
+
+    /* Verify */
+    .fp { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    .fp code { flex: 1 1 min(260px, 100%); padding: 10px 12px; }
+    pre { background: var(--surface-2); padding: 12px 14px; border-radius: 10px; overflow-x: auto; margin: 8px 0 12px; }
+
+    footer { padding: 32px 0 48px; border-top: 1px solid var(--border); color: var(--muted); font-size: .9rem; }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .btn { transition: filter .15s ease, border-color .15s ease; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <!-- HERO: the main download button needs no JavaScript.
+         /releases/latest/download/regain.apk always serves the newest non-draft, non-prerelease APK. -->
+    <header class="hero">
+      <div class="wrap">
+        <div class="eyebrow">Android launcher</div>
+        <h1>Regain</h1>
+        <p class="lead">Regain control of your life, attention, and time. A minimalist, text-only launcher that turns your phone from a dopamine casino back into a tool.</p>
+        <div class="cta">
+          <a class="btn btn-primary" id="download-latest"
+             href="https://github.com/ToyZ-95/regain-releases/releases/latest/download/regain.apk">
+            ↓ Download APK
+          </a>
+          <a class="btn btn-ghost" href="#install">How to install</a>
+        </div>
+        <p class="meta" id="latest-meta">Free · Android 9 or newer</p>
+        <img class="banner" src="assets/banner.png" width="1280" height="640"
+             alt="Fewer distractions. More life. Regain, Android launcher.">
+      </div>
+    </header>
+
+    <!-- VERSIONS: filled from GitHub's public releases API. Hidden notice explains fallback. -->
+    <section id="versions">
+      <div class="wrap">
+        <h2>Versions</h2>
+        <div class="card">
+          <div class="versions-row" id="versions-ui" hidden>
+            <div class="field">
+              <label for="version-select">Choose a version</label>
+              <select id="version-select"></select>
+            </div>
+            <a class="btn btn-ghost" id="download-selected" href="#">↓ Download this version</a>
+          </div>
+          <p class="meta" id="selected-meta"></p>
+          <div class="notes" id="selected-notes"></div>
+          <p class="notice" id="versions-notice">Loading versions… If this doesn't load, all builds are listed on
+            <a href="https://github.com/ToyZ-95/regain-releases/releases">GitHub Releases</a>.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="screenshots">
+      <div class="wrap">
+        <h2>Screenshots</h2>
+        <div class="shots">
+          <figure><img src="assets/home-screen-1.jpg" width="537" height="1200" loading="lazy" alt="Home screen: large clock, date, and five favorite apps as plain text"><figcaption>Home screen</figcaption></figure>
+          <figure><img src="assets/home-screen-2.jpg" width="537" height="1200" loading="lazy" alt="Long-press menu with Edit Favorites and Regain Settings"><figcaption>Quick menu</figcaption></figure>
+          <figure><img src="assets/app-drawer-2.jpg" width="537" height="1200" loading="lazy" alt="App drawer search filtering apps as you type"><figcaption>Live search</figcaption></figure>
+          <figure><img src="assets/edit-favorites-1.jpg" width="537" height="1200" loading="lazy" alt="Edit favorites list with checkboxes"><figcaption>Edit favorites</figcaption></figure>
+        </div>
+      </div>
+    </section>
+
+    <section id="install">
+      <div class="wrap">
+        <h2>How to install</h2>
+        <div class="grid-2">
+          <div class="card">
+            <h3>Install</h3>
+            <ol class="steps">
+              <li>Tap <strong>Download APK</strong> on your Android phone.</li>
+              <li>Open the downloaded APK. If asked, allow your browser to <strong>install unknown apps</strong>.</li>
+              <li>Google Play Protect may say the app is from an unknown developer, because Regain isn't on the Play Store yet. Tap <strong>More details → Install anyway</strong>.</li>
+              <li>Press your phone's <strong>Home</strong> button, choose <strong>Regain</strong>, then <strong>Always</strong>.</li>
+            </ol>
+          </div>
+          <div class="card">
+            <h3>Update or switch back</h3>
+            <ol class="steps">
+              <li><strong>Update:</strong> download the new APK and install it over the old one. Your favorites and settings stay.</li>
+              <li><strong>Switch back to your old launcher:</strong> Settings → Apps → Default apps → Home app.</li>
+              <li><strong>Uninstall:</strong> switch launchers first, then uninstall Regain like any app.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="verify">
+      <div class="wrap">
+        <h2>Verify your download</h2>
+        <p class="muted">Every official build is signed with the same certificate. Its SHA-256 fingerprint is:</p>
+        <div class="fp">
+          <code id="cert-fp">45:EA:B2:7C:FB:DD:06:B9:F1:5C:FE:87:E4:58:EA:F5:72:9D:28:8F:2A:01:7C:65:72:FD:21:B6:6E:BE:04:19</code>
+          <button class="btn btn-ghost" id="copy-fp" type="button">Copy</button>
+        </div>
+        <p class="muted" style="margin-top:16px">Check the certificate (Android SDK build-tools):</p>
+        <pre>apksigner verify --print-certs regain.apk</pre>
+        <p class="muted">Check the file wasn't corrupted (download the matching <code>.sha256</code> file from the same release into the same folder):</p>
+        <pre>shasum -a 256 -c regain.apk.sha256</pre>
+        <p class="muted">Android also enforces this on its own: an APK signed with any other certificate can't install over Regain.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <p>No ads, no analytics, no trackers. This page only talks to GitHub's public API to list versions.</p>
+      <p><a href="https://github.com/ToyZ-95/regain-releases/releases">All releases on GitHub</a></p>
+    </div>
+  </footer>
+
+  <script>
+    // Progressive enhancement: everything above works without this script.
+    (() => {
+      const REPO = "ToyZ-95/regain-releases";
+      const API = `https://api.github.com/repos/${REPO}/releases?per_page=50`;
+      const STABLE_APK = "regain.apk";                         // fixed name → permanent latest/download link
+      const isVersionedApk = (n) => /^regain_v\d+\.\d+\.\d+\.apk$/.test(n);  // e.g. regain_v1.2.3.apk
+      // Prefer the versioned file (users see the version in the file name); older releases only have regain.apk.
+      const pickApk = (assets = []) =>
+        assets.find((a) => isVersionedApk(a.name)) || assets.find((a) => a.name === STABLE_APK);
+
+      const $ = (id) => document.getElementById(id);
+      const select = $("version-select");
+
+      const fmtDate = (iso) =>
+        new Date(iso).toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
+      const fmtSize = (bytes) => `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+      // Notes = the tag message; drop the "--- Verify your download" block (shown in its own section).
+      const notesOf = (body) => (body || "").split(/\r?\n---\r?\n/)[0].trim();
+      const metaOf = (r) => `${r.tag_name} · ${fmtDate(r.published_at)} · ${fmtSize(r.apk.size)} · Android 9+`;
+
+      function show(release) {
+        $("download-selected").href = release.apk.browser_download_url;
+        $("selected-meta").textContent = metaOf(release);
+        $("selected-notes").textContent = notesOf(release.body);   // textContent: never parse notes as HTML
+      }
+
+      fetch(API, { headers: { Accept: "application/vnd.github+json" } })
+        .then((res) => {
+          if (!res.ok) throw new Error(`GitHub API ${res.status}`);
+          return res.json();
+        })
+        .then((all) => {
+          const releases = all
+            .filter((r) => !r.draft)
+            .map((r) => ({ ...r, apk: pickApk(r.assets) }))
+            .filter((r) => r.apk);
+          if (releases.length === 0) {
+            $("versions-notice").textContent = "No releases yet. Check back soon.";
+            return;
+          }
+
+          const latest = releases.find((r) => !r.prerelease) || releases[0];
+          $("latest-meta").textContent = `Latest: ${metaOf(latest)}`;
+          $("download-latest").href = latest.apk.browser_download_url;   // no-JS fallback stays regain.apk
+
+          releases.forEach((r, i) => {
+            const opt = document.createElement("option");
+            opt.value = String(i);
+            opt.textContent = r.tag_name +   // date is shown below the dropdown; keeps options short on phones
+              (r === latest ? " · latest" : r.prerelease ? " · pre-release" : "");
+            select.appendChild(opt);
+          });
+          select.value = String(releases.indexOf(latest));
+          select.addEventListener("change", () => show(releases[Number(select.value)]));
+          show(latest);
+
+          $("versions-ui").hidden = false;
+          $("versions-notice").hidden = true;
+        })
+        .catch(() => {
+          // Rate-limited (60 requests/hour per IP) or offline: the main button still works.
+          $("versions-notice").innerHTML =
+            'Couldn\'t load the version list right now. The download button above always gets the latest build; ' +
+            'older builds are on <a href="https://github.com/ToyZ-95/regain-releases/releases">GitHub Releases</a>.';
+        });
+
+      $("copy-fp").addEventListener("click", async () => {
+        try {
+          await navigator.clipboard.writeText($("cert-fp").textContent.trim());
+          $("copy-fp").textContent = "Copied";
+          setTimeout(() => ($("copy-fp").textContent = "Copy"), 1500);
+        } catch {
+          /* Clipboard blocked: the fingerprint is still selectable text. */
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
