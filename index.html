@@ -7,7 +7,6 @@
   <meta name="description" content="Regain is a minimalist, text-only Android launcher that turns your phone from a dopamine casino back into a tool. Free APK download.">
   <meta property="og:title" content="Regain Launcher">
   <meta property="og:description" content="A minimalist, text-only Android launcher. Friction as a feature.">
-  <meta property="og:image" content="https://toyz-95.github.io/regain-releases/assets/banner.png">
   <meta property="og:type" content="website">
   <meta name="theme-color" content="#0b1118">
   <style>
@@ -64,7 +63,28 @@
     .btn-ghost { background: transparent; color: var(--text); border-color: var(--border); }
     .btn-ghost:hover { border-color: var(--accent); }
     .meta { margin-top: 12px; font-size: .95rem; color: var(--muted); min-height: 1.6em; }
-    .banner { margin-top: 40px; width: 100%; height: auto; border-radius: var(--radius); border: 1px solid var(--border); display: block; }
+    /* Statement block (replaces the banner image): real text, scales with the viewport */
+    .statement {
+      margin-top: 40px; padding: clamp(28px, 6vw, 64px);
+      border: 1px solid var(--border); border-radius: var(--radius);
+      background: linear-gradient(135deg, var(--surface) 0%, var(--bg) 100%);
+    }
+    .statement-line {
+      margin: 0; font-size: clamp(2rem, 7.5vw, 4.5rem); font-weight: 600;
+      letter-spacing: -0.035em; line-height: 1.05; overflow-wrap: anywhere;
+    }
+    .statement-line.accent { color: var(--accent); }
+    .rotating { display: inline-block; }
+    .statement-sign {
+      margin: clamp(20px, 4vw, 36px) 0 0; display: flex; align-items: center; gap: 12px;
+      color: var(--muted); font-size: clamp(.95rem, 2.2vw, 1.2rem);
+    }
+    .statement-sign strong { color: var(--text); font-weight: 600; }
+    .statement-sign .bar { width: 32px; height: 3px; border-radius: 2px; background: var(--accent); flex: none; }
+    .sr-only {
+      position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+    }
 
     /* Versions */
     .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
@@ -101,6 +121,8 @@
 
     @media (prefers-reduced-motion: no-preference) {
       .btn { transition: filter .15s ease, border-color .15s ease; }
+      .rotating { transition: opacity .35s ease, transform .35s ease; }
+      .rotating.out { opacity: 0; transform: translateY(.2em); }
     }
   </style>
 </head>
@@ -121,8 +143,11 @@
           <a class="btn btn-ghost" href="#install">How to install</a>
         </div>
         <p class="meta" id="latest-meta">Free · Android 9 or newer</p>
-        <img class="banner" src="assets/banner.png" width="1280" height="640"
-             alt="Fewer distractions. More life. Regain, Android launcher.">
+        <div class="statement">
+          <p class="statement-line">Fewer distractions.</p>
+          <p class="statement-line accent">More <span class="rotating" id="rotating-word" aria-hidden="true">life</span><span class="sr-only">life</span>.</p>
+          <p class="statement-sign"><span class="bar"></span><span><strong>Regain</strong> · Android launcher</span></p>
+        </div>
       </div>
     </header>
 
@@ -273,6 +298,22 @@
             'Couldn\'t load the version list right now. The download button above always gets the latest build; ' +
             'older builds are on <a href="https://github.com/ToyZ-95/regain-releases/releases">GitHub Releases</a>.';
         });
+
+      // Statement: cycle "More life / focus / time" (static for users who prefer reduced motion)
+      const word = $("rotating-word");
+      const words = ["life", "focus", "time"];
+      if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        let i = 0;
+        setInterval(() => {
+          if (document.hidden) return;               // don't animate in background tabs
+          word.classList.add("out");
+          setTimeout(() => {
+            i = (i + 1) % words.length;
+            word.textContent = words[i];
+            word.classList.remove("out");
+          }, 350);                                    // matches the CSS transition
+        }, 2800);
+      }
 
       $("copy-fp").addEventListener("click", async () => {
         try {
