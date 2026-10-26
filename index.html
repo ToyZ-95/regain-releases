@@ -250,7 +250,13 @@
         new Date(iso).toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
       const fmtSize = (bytes) => `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
       // Notes = the tag message; drop the "--- Verify your download" block (shown in its own section).
-      const notesOf = (body) => (body || "").split(/\r?\n---\r?\n/)[0].trim();
+      // Markdown → plain text (still inserted with textContent, so nothing is ever parsed as HTML)
+      const notesOf = (body) => (body || "").split(/\r?\n---\r?\n/)[0]
+        .replace(/^#{1,6}\s*/gm, "")            // "## Heading" → "Heading"
+        .replace(/\*\*(.+?)\*\*/g, "$1")         // **bold** → bold
+        .replace(/`([^`]+)`/g, "$1")            // `code` → code
+        .replace(/^\s*[-*]\s+/gm, "• ")         // "- item" → "• item"
+        .trim();
       const metaOf = (r) => `${r.tag_name} · ${fmtDate(r.published_at)} · ${fmtSize(r.apk.size)} · Android 9+`;
 
       function show(release) {
