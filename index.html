@@ -129,15 +129,16 @@
 <body>
   <main>
     <!-- HERO: the main download button needs no JavaScript.
-         /releases/latest/download/regain.apk always serves the newest non-draft, non-prerelease APK. -->
+         download/regain.apk is the newest release's APK, added to the site on every deploy (pages.yml). -->
     <header class="hero">
       <div class="wrap">
         <div class="eyebrow">Android launcher</div>
         <h1>Regain</h1>
         <p class="lead">Regain control of your life, attention, and time. A minimalist, text-only launcher that turns your phone from a dopamine casino back into a tool.</p>
         <div class="cta">
-          <a class="btn btn-primary" id="download-latest"
-             href="https://github.com/ToyZ-95/regain-releases/releases/latest/download/regain.apk">
+          <!-- Same-origin file (deployed by .github/workflows/pages.yml): no GitHub-app interception,
+               and `download` makes the browser save it without leaving the page. -->
+          <a class="btn btn-primary" id="download-latest" href="download/regain.apk" download="regain.apk">
             ↓ Download APK
           </a>
           <a class="btn btn-ghost" href="#install">How to install</a>
@@ -259,8 +260,17 @@
         .trim();
       const metaOf = (r) => `${r.tag_name} · ${fmtDate(r.published_at)} · ${fmtSize(r.apk.size)} · Android 9+`;
 
+      let latest = null;   // set once releases are loaded
+
       function show(release) {
-        $("download-selected").href = release.apk.browser_download_url;
+        const link = $("download-selected");
+        if (release === latest) {
+          link.href = "download/regain.apk";            // same-origin copy of the newest APK
+          link.setAttribute("download", "regain.apk");
+        } else {
+          link.href = release.apk.browser_download_url;  // older builds come from GitHub Releases
+          link.removeAttribute("download");              // ignored cross-origin anyway
+        }
         $("selected-meta").textContent = metaOf(release);
         $("selected-notes").textContent = notesOf(release.body);   // textContent: never parse notes as HTML
       }
@@ -280,9 +290,8 @@
             return;
           }
 
-          const latest = releases.find((r) => !r.prerelease) || releases[0];
+          latest = releases.find((r) => !r.prerelease) || releases[0];
           $("latest-meta").textContent = `Latest: ${metaOf(latest)}`;
-          $("download-latest").href = latest.apk.browser_download_url;   // no-JS fallback stays regain.apk
 
           releases.forEach((r, i) => {
             const opt = document.createElement("option");

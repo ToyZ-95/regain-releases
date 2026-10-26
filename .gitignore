@@ -1,0 +1,2 @@
+# The APK is added at deploy time by .github/workflows/pages.yml; never commit it
+download/

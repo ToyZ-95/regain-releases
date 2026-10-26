@@ -1,0 +1,65 @@
+# ─────────────────────────────────────────────────────────────
+# Deploy the download site + the latest APK to GitHub Pages.
+# The APK is added at deploy time (never committed), so the repo doesn't grow per release.
+# ─────────────────────────────────────────────────────────────
+name: Deploy site
+
+on:
+  push:
+    branches: [main]          # site edits (index.html, assets) go live
+  release:
+    types: [published]        # new release from Regain's pipeline → ship the new APK
+  workflow_dispatch:          # manual "Run workflow" button, just in case
+
+# Only what a Pages deployment needs. GITHUB_TOKEN is enough: everything stays in this repo.
+permissions:
+  contents: read              # read the site files + release assets
+  pages: write                # publish to Pages
+  id-token: write             # proves to Pages that this deploy came from this workflow
+
+# Never run two deploys at once; finish the running one instead of cancelling it.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Checkout site
+        uses: actions/checkout@v7
+
+      # Put the newest release's APK next to index.html → served as download/regain.apk
+      # on the SAME origin as the page (no GitHub-app interception, `download` attribute works).
+      - name: Add latest APK
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p download
+          if gh release download --repo "$GITHUB_REPOSITORY" --pattern regain.apk --dir download --clobber; then
+            ls -l download
+          else
+            echo "::warning::No release with regain.apk found; deploying the site without it."
+          fi
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v6
+
+      # Bundles the folder (excludes .git, .github and dot-files) as the site artifact
+      - name: Upload site
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: .
+
+      - name: Deploy to Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
