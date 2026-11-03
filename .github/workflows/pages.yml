@@ -70,6 +70,7 @@ jobs:
 
       # Bundles the folder (excludes .git, .github and dot-files) as the site artifact
       - name: Upload site
+        id: upload
         uses: actions/upload-pages-artifact@v5
         with:
           path: .
@@ -83,16 +84,14 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           BUILD_VERSION: ${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          ARTIFACT_ID: ${{ steps.upload.outputs.artifact_id }}
         run: |
-          artifact_id=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/artifacts" \
-            --jq '.artifacts[] | select(.name == "github-pages") | .id')
-
           # OIDC token proves this deploy came from this workflow (needs `id-token: write`)
           oidc_token=$(curl -sSf -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
             "$ACTIONS_ID_TOKEN_REQUEST_URL" | jq -r .value)
 
           response=$(gh api -X POST "repos/$GITHUB_REPOSITORY/pages/deployments" \
-            -F artifact_id="$artifact_id" \
+            -F artifact_id="$ARTIFACT_ID" \
             -f pages_build_version="$BUILD_VERSION" \
             -f oidc_token="$oidc_token")
           deployment_id=$(jq -r .id <<< "$response")
